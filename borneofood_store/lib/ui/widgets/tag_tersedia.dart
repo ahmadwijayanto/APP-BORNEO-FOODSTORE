@@ -13,7 +13,7 @@ class TagTersedia extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: (this.stock <= 0) ? Colors.white : Colors.black,
-        border: Border.all(),
+        // border: Border.all(),
       ),
       child: Text(
         (this.stock <= 0) ? 'Habis' : 'Tersedia',

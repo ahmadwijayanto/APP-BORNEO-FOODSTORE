@@ -10,7 +10,7 @@ class TagTerbaru extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(),
+        // border: Border.all(),
       ),
       child: Text(
         'Terbaru',

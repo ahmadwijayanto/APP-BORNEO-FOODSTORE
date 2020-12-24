@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: mainColor,
         title: Center(
             child: Text(
-          'Borneo Food Store',
+          'Borneofood Store',
           style: appBarText,
         )),
       ),

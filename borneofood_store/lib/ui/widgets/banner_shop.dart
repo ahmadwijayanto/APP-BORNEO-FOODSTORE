@@ -9,7 +9,7 @@ class ShopBanner extends StatelessWidget {
     return FittedBox(
       fit: BoxFit.fill,
       child: Image.asset(
-        image,
+        image != null ? image : null,
       ),
     );
   }

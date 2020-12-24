@@ -1,7 +1,46 @@
 part of 'pages.dart';
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
   static final routeName = "/search_page";
+
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  String payloadString = '';
+  Payload payload = new Payload();
+  List<Product> allProduct = new List<Product>();
+  List<String> productName = new List<String>();
+  List<String> recentProductName = new List<String>();
+
+  void getPayload() async {
+    payloadString = await getStringValue(KEY_PAYLOAD);
+    final jsonData = json.decode(payloadString);
+    payload = Payload.fromJson(jsonData);
+
+    setState(() {
+      allProduct = payload.getProduct;
+      
+      for (var i = 0; i < allProduct.length; i++) {
+        productName.add(allProduct[i].getName);
+      }
+    });
+  }
+
+  // void getAllProductName() {
+  //   allProduct = payload.getProduct;
+
+  //   for (var i = 0; i < allProduct.length; i++) {
+  //     productName.add(allProduct[i].getName);
+  //   }
+  // }
+
+  @override
+  void initState() {
+    getPayload();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +57,7 @@ class SearchPage extends StatelessWidget {
             icon: Icon(Icons.search),
             color: Colors.white,
             onPressed: () {
-              showSearch(context: context, delegate: DataSearch());
+              showSearch(context: context, delegate: DataSearch(allProduct: allProduct, productName: productName, recentProductName: recentProductName));
             },
           )
         ],
@@ -30,38 +69,54 @@ class SearchPage extends StatelessWidget {
 
 class DataSearch extends SearchDelegate<String> {
 
-  final product = [
-    "urat mayang sapi",
-    "babat sapi bersih",
-    "french fries crinkle cut",
-    "tetelan leher neck trimming",
-    "barts french fries shoestring",
-    "daging tetelan sapi",
-    "daging kerbau sop",
-    "iga sapi konro",
-    "lemak timbul fat trimming",
-    "kentang goreng",
-    "kentang goreng lapis keju",
-    "keju mozarella belgee",
-    "ceker bebek",
-    "bebek ungkep bumbu",
-    "daging tenderloin",
-    "daging kerbau semur",
-    "daging sapi rendang",
-    "daging kerbau rendang",
-    "kambing potong",
-    "telur bebek",
-    "tunggir ayam",
-    "ayam fillet dada",
-    "ikan dori",
-  ];
+  DataSearch({
+        this.allProduct,
+        this.productName,
+        this.recentProductName,
+      });
 
-  final recentProduct = [
-    "telur bebek",
-    "tunggir ayam",
-    "ayam fillet dada",
-    "ikan dori",
-  ];
+  final List<Product> allProduct;
+  final List<String> productName;
+  final List<String> recentProductName;
+
+  Product selectedProduct;
+
+  // List<Product> allProduct = _SearchPageState().allProduct;
+  // List<String> productName = _SearchPageState().productName;
+  // List<String> recentProductName = _SearchPageState().recentProductName;
+
+  // final product = [
+  //   "urat mayang sapi",
+  //   "babat sapi bersih",
+  //   "french fries crinkle cut",
+  //   "tetelan leher neck trimming",
+  //   "barts french fries shoestring",
+  //   "daging tetelan sapi",
+  //   "daging kerbau sop",
+  //   "iga sapi konro",
+  //   "lemak timbul fat trimming",
+  //   "kentang goreng",
+  //   "kentang goreng lapis keju",
+  //   "keju mozarella belgee",
+  //   "ceker bebek",
+  //   "bebek ungkep bumbu",
+  //   "daging tenderloin",
+  //   "daging kerbau semur",
+  //   "daging sapi rendang",
+  //   "daging kerbau rendang",
+  //   "kambing potong",
+  //   "telur bebek",
+  //   "tunggir ayam",
+  //   "ayam fillet dada",
+  //   "ikan dori",
+  // ];
+
+  // final recentProduct = [
+  //   "telur bebek",
+  //   "tunggir ayam",
+  //   "ayam fillet dada",
+  //   "ikan dori",
+  // ];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -86,19 +141,37 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection
+    // return ProductCard(itemData: selectedProduct);
     return SizedBox();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     // show when someone searches for something
-    final suggestionList = query.isEmpty  ? recentProduct : product.where((element) => element.startsWith(query)).toList();
+    final suggestionList = query.isEmpty  ? recentProductName : productName.where((element) => element.toLowerCase().contains(query.toLowerCase())).toList();
+    // final suggestionList = query.isEmpty  ? recentProductNproductNameame : productName.where((element) => element.startsWith(query)).toList();
+    // final suggestionList = query.isEmpty  ? recentProduct : product.where((element) => element.startsWith(query)).toList();
     // final suggestionList = query.isEmpty  ? recentProduct : product.where((element) => element.contains(query)).toList();
 
     return ListView.builder(
       itemBuilder: (context, index) => ListTile(
         onTap: (){
-          showResults(context);
+          if (!recentProductName.contains(suggestionList[index])) {
+            if (recentProductName.length > 10) {
+              recentProductName.removeAt(0);
+            }
+            recentProductName.add(suggestionList[index]);
+          }
+          for (var i = 0 ; i < allProduct.length ; i++) {
+            if (allProduct[i].getName == suggestionList[index]) {
+              selectedProduct = allProduct[i];
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ProductPage(
+                  itemData: selectedProduct,
+                )));
+            }
+          }
+          // showResults(context);
         },
         leading: Icon(Icons.set_meal),
         title: RichText(text: TextSpan(

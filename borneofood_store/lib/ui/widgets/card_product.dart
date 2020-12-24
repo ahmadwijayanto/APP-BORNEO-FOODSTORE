@@ -1,7 +1,8 @@
 part of 'widgets.dart';
 
 class ProductCard extends StatelessWidget {
-  final dynamic itemData;
+  // final dynamic itemData;
+  final Product itemData;
   final double width;
   final double height;
 
@@ -15,7 +16,8 @@ class ProductCard extends StatelessWidget {
     // 23/06/2020
     DateFormat format = DateFormat("dd/MM/yyyy");
     DateTime today = DateTime.now();
-    DateTime release = format.parse(this.itemData["created_at"]);
+    DateTime release = format.parse(this.itemData.getCreatedAt);
+    // DateTime release = format.parse(this.itemData["created_at"]);
 
     int difference = today.difference(release).inDays;
     return difference <= 30;
@@ -57,13 +59,15 @@ class ProductCard extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                    image: AssetImage(this.itemData["image"]),
+                    image: AssetImage(this.itemData.getImage),
+                    // image: AssetImage(this.itemData["image"]),
                     fit: BoxFit.contain)),
             child: Stack(children: <Widget>[
               Positioned(
                 bottom: 0,
                 left: 0,
-                child: TagTersedia(stock: this.itemData["stock"]),
+                child: TagTersedia(stock: this.itemData.getStock),
+                // child: TagTersedia(stock: this.itemData["stock"]),
               ),
               Positioned(
                 top: 0,
@@ -75,12 +79,14 @@ class ProductCard extends StatelessWidget {
           addVerticalSpace(getProportionateScreenHeight(10)),
           Align(
               alignment: Alignment.centerLeft,
-              child: Text(this.itemData["name"])),
+              child: Text(this.itemData.getName)),
+              // child: Text(this.itemData["name"])),
           addVerticalSpace(getProportionateScreenHeight(5)),
           Row(
             children: [
               Text('Rp ', style: boldSmallText),
-              Text(this.itemData["price"].toString(), style: boldSmallText),
+              Text(this.itemData.getPrice.toString(), style: boldSmallText),
+              // Text(this.itemData["price"].toString(), style: boldSmallText),
             ],
           ),
         ]),

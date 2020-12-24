@@ -3,7 +3,8 @@ part of 'pages.dart';
 class ProductPage extends StatefulWidget {
   static final routeName = "/product_page";
 
-  final dynamic itemData;
+  // final dynamic itemData;
+  final Product itemData;
 
   const ProductPage({Key key, this.itemData}) : super(key: key);
 
@@ -69,7 +70,8 @@ class _ProductPageState extends State<ProductPage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(widget.itemData["image"]),
+                        image: AssetImage(widget.itemData.getImage),
+                        // image: AssetImage(widget.itemData["image"]),
                         fit: BoxFit.fill)),
               ),
 
@@ -86,7 +88,8 @@ class _ProductPageState extends State<ProductPage> {
                           style: productPriceText,
                         ),
                         Text(
-                          widget.itemData["price"].toString(),
+                          widget.itemData.getPrice.toString(),
+                          // widget.itemData["price"].toString(),
                           style: productPriceText,
                         ),
                       ],
@@ -97,7 +100,8 @@ class _ProductPageState extends State<ProductPage> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        widget.itemData["name"],
+                        widget.itemData.getName,
+                        // widget.itemData["name"],
                         style: productNameText,
                       ),
                     ),
@@ -125,7 +129,8 @@ class _ProductPageState extends State<ProductPage> {
                           Positioned(
                               bottom: 5,
                               right: 10,
-                              child: Text(widget.itemData["stock"].toString(),
+                              child: Text(widget.itemData.getStock.toString(),
+                              // child: Text(widget.itemData["stock"].toString(),
                                   style: blackMediumText)),
                         ],
                       ),
@@ -136,7 +141,8 @@ class _ProductPageState extends State<ProductPage> {
                     Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          widget.itemData["description"],
+                          widget.itemData.getDescription,
+                          // widget.itemData["description"],
                           style: greyMediumText,
                         )),
 
@@ -159,7 +165,8 @@ class _ProductPageState extends State<ProductPage> {
                           ),
                           FloatingActionButton(
                             heroTag: 'btn_plus',
-                            onPressed: _n >= widget.itemData["stock"] ? null : add,
+                            onPressed: _n >= widget.itemData.getStock ? null : add,
+                            // onPressed: _n >= widget.itemData["stock"] ? null : add,
                             child: new Icon(Icons.add, color: Colors.white),
                             backgroundColor: Colors.deepOrangeAccent,
                           ),

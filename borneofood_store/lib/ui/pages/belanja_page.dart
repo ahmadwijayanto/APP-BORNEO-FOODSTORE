@@ -8,12 +8,50 @@ class BelanjaPage extends StatefulWidget {
 }
 
 class _BelanjaPageState extends State<BelanjaPage> {
-  String selectedCategory = "Semua";
+  // private variable
   int currentBanner = 0;
+  String payloadString = "";
+  String selectedCategory = "Semua";
+  Payload payload = new Payload();
+
+  // list fom payload
+  List<Product> filteredProduct = new List<Product>();
+  List<Product> allProduct = new List<Product>();
+  List<Category> allCategory = new List<Category>();
+  List<Banners> allBanner = new List<Banners>();
 
   PageController bannerController = PageController(
     initialPage: 0,
   );
+
+  Future loadPayload() async {
+    String jsonString = await rootBundle.loadString("assets/product.json"); // get payload json as string
+    final jsonData = json.decode(jsonString); // convert json string to real json
+    payload = Payload.fromJson(jsonData); // put the real json into the right class so it can be accessed
+    setStringVal(KEY_PAYLOAD, jsonString);
+
+    setState(() {
+      allBanner = payload.getBanner;
+      allCategory = payload.getCategory;
+      allProduct = payload.getProduct;
+      filteredProduct = payload.getProduct;
+    });
+  }
+
+  void updateListProduct(String category) {
+    filteredProduct = new List<Product>();
+
+    if (category == "Semua") {
+        filteredProduct.addAll(allProduct);
+        return;
+    }
+
+    for (var i = 0; i < allProduct.length; i++) {
+      if (allProduct[i].getCategory == category) {
+        filteredProduct.add(allProduct[i]);
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -21,9 +59,7 @@ class _BelanjaPageState extends State<BelanjaPage> {
     // kalau sudah login tulisan dan gambar "akun"
     // kalau belum login tulisan dan gambar "masuk"
 
-    super.initState();
-
-
+    loadPayload();
 
     Timer.periodic(Duration(seconds: 5), (Timer timer) {
       if (currentBanner < 2) {
@@ -32,12 +68,16 @@ class _BelanjaPageState extends State<BelanjaPage> {
         currentBanner = 0;
       }
 
-      bannerController.animateToPage(
+      if (bannerController.hasClients) {
+        bannerController.animateToPage(
         currentBanner,
         duration: Duration(milliseconds: 350),
         curve: Curves.easeIn,
       );
+      }
     });
+
+    super.initState();
   }
 
   @override
@@ -64,9 +104,11 @@ class _BelanjaPageState extends State<BelanjaPage> {
                             currentBanner = value;
                           });
                         },
-                        itemCount: BANNER_DATA.length,
+                        itemCount: allBanner.length,
+                        // itemCount: BANNER_DATA.length,
                         itemBuilder: (context, index) => ShopBanner(
-                          image: BANNER_DATA[index]["image"],
+                          image: allBanner[index].getImageUrl,
+                          // image: BANNER_DATA[index]["image"],
                         ),
                       ),
                       Positioned(
@@ -144,19 +186,31 @@ class _BelanjaPageState extends State<BelanjaPage> {
                     child: ListView.builder(
                       physics: BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
-                      itemCount: CATEGORY_DATA.length,
+                      
+                      itemCount: allCategory.length,
+                      // itemCount: CATEGORY_DATA.length,
+
                       itemBuilder: (_, index) => Container(
                         margin: EdgeInsets.only(
                           left: (index == 0) ? 5 : 0,
-                          right: (index < CATEGORY_DATA.length - 1) ? 5 : 5,
+
+                          right: (index < allCategory.length - 1) ? 5 : 5,
+                          // right: (index < CATEGORY_DATA.length - 1) ? 5 : 5,
+                        
                         ),
                         child: CategoryCard(
-                          CATEGORY_DATA[index]["name"],
+
+                          allCategory[index].getName,
+                          // CATEGORY_DATA[index]["name"],
+                          
                           isSelected:
-                              selectedCategory == CATEGORY_DATA[index]["name"],
+                              selectedCategory == allCategory[index].getName,
+                              // selectedCategory == CATEGORY_DATA[index]["name"],
                           onTap: () {
                             setState(() {
-                              selectedCategory = CATEGORY_DATA[index]["name"];
+                              selectedCategory = allCategory[index].getName;
+                              updateListProduct(selectedCategory);
+                              // selectedCategory = CATEGORY_DATA[index]["name"];
                             });
                           },
                         ),
@@ -174,7 +228,10 @@ class _BelanjaPageState extends State<BelanjaPage> {
                           child: GridView.builder(
                             physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.vertical,
-                            itemCount: PRODUCT_DATA.length,
+
+                            itemCount: selectedCategory == "semua" ? allProduct.length : filteredProduct.length,
+                            // itemCount: PRODUCT_DATA.length,
+
                             gridDelegate:
                                 new SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -186,7 +243,9 @@ class _BelanjaPageState extends State<BelanjaPage> {
                                   bottom: 2.0,
                                 ),
                                 child: ProductCard(
-                                  itemData: PRODUCT_DATA[index],
+
+                                  itemData: selectedCategory == "semua" ? allProduct[index] : filteredProduct[index],
+                                  // itemData: PRODUCT_DATA[index],
 
                                 )),
                           ),
