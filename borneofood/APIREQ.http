@@ -1,0 +1,28 @@
+# Api Untuk Register
+POST https://borneofood.app/api/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "Ibrahim",
+    "email": "ibrahim@mail.com",
+    "password": "password",
+    "password_confirmation": "password"
+}
+
+###
+# Api Untuk Login
+POST https://borneofood.app/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "ibrahim@mail.com",
+    "password": "password"
+}
+
+###
+# Api untuk get active user
+GET https://borneofood.app/api/user HTTP/1.1
+
+###
+# Api Untuk logout
+GET https://borneofood.app/api/logout HTTP/1.1
