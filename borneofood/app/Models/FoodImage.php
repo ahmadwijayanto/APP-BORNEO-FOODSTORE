@@ -13,6 +13,10 @@ class FoodImage extends Model
         'food_id', 'image'
     ];
 
+    protected $hidden = [
+        'food_id',
+        'id'
+    ];
     public function food()
     {
         $this->belongsTo(Food::class);

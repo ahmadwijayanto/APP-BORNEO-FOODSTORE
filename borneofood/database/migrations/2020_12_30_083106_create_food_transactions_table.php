@@ -1,11 +1,12 @@
 <?php
 
 use App\Models\Food;
+use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFoodImagesTable extends Migration
+class CreateFoodTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +15,12 @@ class CreateFoodImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('food_images', function (Blueprint $table) {
+        Schema::create('food_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
             $table->foreignIdFor(Food::class)->constrained();
+            $table->foreignIdFor(Transaction::class)->constrained();
+            $table->integer('qty')->default(1);
+            $table->integer('price')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateFoodImagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('food_images');
+        Schema::dropIfExists('food_transactions');
     }
 }
