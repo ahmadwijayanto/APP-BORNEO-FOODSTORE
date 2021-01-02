@@ -60,7 +60,19 @@ class FoodController extends Controller
      */
     public function show($id)
     {
-        //
+        $food = Food::find($id);
+        if($food == null){
+            return ResponseHelper::error(
+                [
+                    "message" => "Food tidak ditemukan"
+                ],
+                "Food with id ".$id." Not found"
+            );
+        }
+        return ResponseHelper::success(
+            $food,
+            "Food successfuly loaded"
+        );
     }
 
     /**
@@ -72,7 +84,20 @@ class FoodController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $food = Food::find($id);
+        if($food == null){
+            return ResponseHelper::error(
+                [
+                    "message" => "Food tidak ditemukan"
+                ],
+                "Food with id ".$id." Not found"
+            );
+        }
+        $food->update($request->all());
+        return ResponseHelper::success(
+            $food,
+            "Food successfuly updated"
+        );
     }
 
     /**
@@ -83,6 +108,19 @@ class FoodController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $food = Food::find($id);
+        if($food == null){
+            return ResponseHelper::error(
+                [
+                    "message" => "Food tidak ditemukan"
+                ],
+                "Food with id ".$id." Not found"
+            );
+        }
+        $food->delete();
+        return ResponseHelper::success(
+            $food,
+            "Food successfuly deleted"
+        );
     }
 }
