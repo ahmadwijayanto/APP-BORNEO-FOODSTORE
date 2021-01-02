@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\FoodController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'user']);
     Route::apiResources([
-        'foods' => FoodController::class
+        'foods' => FoodController::class,
+        'categories' => CategoryController::class
     ]);
 });
 Route::post('login', [UserController::class, 'login']);

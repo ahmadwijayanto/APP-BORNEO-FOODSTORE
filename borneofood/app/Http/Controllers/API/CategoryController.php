@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
-use App\Models\Food;
-use Exception;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Helpers\ResponseHelper;
+use Exception;
 
-class FoodController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +17,10 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $foods = Food::all();
+        $categories = Category::all();
         return ResponseHelper::success(
-            $foods,
-            "Data foods berhasil di load"
+            $categories,
+            "Data categori berhasil di muat"
         );
     }
 
@@ -35,16 +35,20 @@ class FoodController extends Controller
         try {
             $request->validate(
                 [
-                    "name" => "required|string",
-                    "price" => "required|integer",
-                    "stock" => "required|integer",
+                    "name" => "required|unique:categories,name"
                 ]
             );
-
+            $category = Category::create(
+                $request->all()
+            );
+            return ResponseHelper::success(
+                $category,
+                "Category Successfuly created"
+            );
         } catch (Exception $error) {
             return ResponseHelper::error(
                 [
-                    "message" => "Something wrong",
+                    "message" => "Something wrong!",
                     "error" => $error
                 ],
                 "Something wrong!"
@@ -55,34 +59,41 @@ class FoodController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        //
+        return ResponseHelper::success(
+            $category,
+            "Data category berhasil di muat"
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->update($request->all());
+        return ResponseHelper::success(
+            $category,
+            "Category Succesfully updated"
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
     }
 }

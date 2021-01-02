@@ -1,4 +1,4 @@
-POST https://borneofood.app/api/register HTTP/1.1
+POST http://borneofood.test/api/register HTTP/1.1
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ###
-POST https://borneofood.app/api/login HTTP/1.1
+POST http://borneofood.test/api/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -18,5 +18,34 @@ Content-Type: application/json
 }
 
 ###
-GET https://borneofood.app/api/user HTTP/1.1
-Authorization: Beaerer 1|cro3NUbdNjrLykyz7U8LgZgKlfxNu9pLQyMan1pr
+GET http://borneofood.test/api/user HTTP/1.1
+Authorization: Bearer 2|BwxALqdt38i7Y3dU59fhp3RWdRTZSzfGuzDv6pWj
+
+###
+
+POST http://borneofood.test/api/categories HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer 2|BwxALqdt38i7Y3dU59fhp3RWdRTZSzfGuzDv6pWj
+
+{
+    "name": "Olahan"
+}
+
+###
+GET http://borneofood.test/api/categories HTTP/1.1
+Authorization: Bearer 2|BwxALqdt38i7Y3dU59fhp3RWdRTZSzfGuzDv6pWj
+###
+POST http://borneofood.test/api/foods HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer 2|BwxALqdt38i7Y3dU59fhp3RWdRTZSzfGuzDv6pWj
+
+{
+    "name" : "Daging",
+    "price": 10000,
+    "stock": 10,
+    "category_id": 1
+}
+
+###
+GET http://borneofood.test/api/foods HTTP/1.1
+Authorization: Bearer 2|BwxALqdt38i7Y3dU59fhp3RWdRTZSzfGuzDv6pWj
