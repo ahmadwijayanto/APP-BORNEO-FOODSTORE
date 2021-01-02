@@ -26,7 +26,7 @@ class User extends Authenticatable
         'houseNumber',
         'phoneNumber',
         'city',
-        'roles',
+        'role',
     ];
 
     /**
@@ -37,8 +37,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        // 'two_factor_recovery_codes',
+        // 'two_factor_secret',
+        'current_team_id'
     ];
 
     /**
@@ -51,13 +52,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'profile_photo_url',
-    ];
+    //  * The accessors to append to the model's array form.
+    //  *
+    //  * @var array
+    //  */
+    // protected $appends = [
+    //     'profile_photo_url',
+    // ];
 
     public function getCreatedAtAttribute($created_at)
     {

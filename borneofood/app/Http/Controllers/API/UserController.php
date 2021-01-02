@@ -13,112 +13,115 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
-     * Funsi untuk register
-     * field: name, email, password
+     * Fungsi Api Login
+     * validasi data user field(email dan password)
      *
-     * return ApiJson user + token
+     * Berhasil return ApiJson berisi User dan Token
+     * Gagal return ApiJson berisi message login gagal
      */
-    public function register(Request $request)
+
+    public function login(Request $request)
     {
         try {
-            $request->validate(
-                [
-                    "name" => "required",
-                    "email" => "required|email|unique:users,email",
-                    "password" => "required|confirmed"
-                ]
-            );
-            $data_user = $request->all();
-            $user = User::create($data_user);
-            $user_token = $user->createToken('authToken')->plainTextToken;
-
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+            $credetials_account = $request->only(['email', 'password']);
+            if (!Auth::attempt($credetials_account)) {
+                return ResponseHelper::error(
+                    [
+                        "message" => "Unauthorized"
+                    ],
+                    "Autentikasi Gagal!",
+                    401
+                );
+            }
+            $user = User::where('email', $request->email)->first();
+            $user_token = $user->createToken('simpleToken')->plainTextToken;
             return ResponseHelper::success(
                 [
-                    "api_token" => $user_token,
-                    "token_type" => "Bearer",
-                    "user" => $user
+                    'api_token' => $user_token,
+                    'user' => $user
                 ],
-                "Registrasi Berhasil"
+                'Autentikasi Berhasil!'
             );
         } catch (Exception $error) {
             return ResponseHelper::error(
                 [
-                    "message" => "Sesuatu terjadi ketika anda registrasi",
+                    "message" => "Periksa email dan password yang anda inputkan",
                     "error" => $error
                 ],
-                "Registrasi Gagal",
-                500
+                'Autentikasi Gagal!',
+                401
             );
         }
     }
 
     /**
-     * Funsi untuk login
-     * field: email, password
+     * Fungsi Api register
+     * validasi data user field(email, name, password)
      *
-     * return ApiJson user + token
+     * Berhasil return ApiJson berisi User dan Token
+     * Gagal return ApiJson berisi message login gagal
      */
-    public function login(Request $request)
+    public function register(Request $request)
     {
         try {
-            $request->validate(
-                [
-                    "email" => "required|email",
-                    "password" => "required"
-                ]
-            );
-            $auth_data = $request->only(["email", "password"]);
-            if (!Auth::attempt($auth_data)) {
-                return ResponseHelper::error(
-                    [
-                        "message" => "Authorisasi Gagal"
-                    ],
-                    "Authentikasi Gagal"
-                );
-            }
-            $user = User::where("email", $request->email)->first();
-            $user_token = $user->createToken('authToken')->plainTextToken;
-            return ResponseHelper::success([
-                [
-                    "api_token" => $user_token,
-                    "token_type" => "Bearer",
-                    "user" => $user
-                ],
-                "Authentikasi berhasil"
+            $request->validate([
+                'email' => 'required|email',
+                'name' => 'required',
+                'password' => 'required|confirmed|min:6',
             ]);
+
+            $user_data = $request->all();
+            $user_data["password"] = Hash::make($user_data["password"]);
+            $user = User::create(
+                $user_data
+            );
+            $user_token = $user->createToken('simpleToken')->plainTextToken;
+            return ResponseHelper::success(
+                [
+                    'api_token' => $user_token,
+                    'user' => $user
+                ],
+                'Registrasi Berhasil!'
+            );
         } catch (Exception $error) {
-            return ResponseHelper::error([
-                "message" => "Login Gagal",
-                "error" => $error
-            ], "Login gagal");
+            return ResponseHelper::error(
+                [
+                    "message" => "Periksa data yang anda inputkan",
+                    "error" => $error
+                ],
+                'Registrasi Gagal!',
+                401
+            );
         }
     }
 
     /**
-     * Fungsi untuk logout
+     * Fungsi Api logout
      *
-     * Remove token from user
+     * Mengambil user active kemudian menghapus token dari sanctum
+     * Success return ApiJson berisi berhasil menghapus token
      */
     public function logout(Request $request)
     {
-        $token = $request->user()->currentAccessToken()->delete();
-
-        return ResponseHelper::success(
-            $token,
-            "Token Berhasil di hapus"
-        );
+        $user = $request->user();
+        $token_deleted = $user->currentAccessToken()->delete();
+        return ResponseHelper::success($token_deleted, "Token Berhasil di hapus!");
     }
 
     /**
-     * Fungsi untuk get user login
+     * Fungsi Api fetch data user
      *
-     * Return ApiJson user
+     * Mengambil user active Mengembalikanya
      */
     public function user(Request $request)
     {
         return ResponseHelper::success(
             $request->user(),
-            "Data user berhasil di muat"
+            "Data User berhasil di muat!"
         );
     }
 }

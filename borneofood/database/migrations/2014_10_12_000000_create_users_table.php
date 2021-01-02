@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('houseNumber')->nullable();
             $table->string('phoneNumber')->nullable();
             $table->string('city')->nullable();
+            $table->enum('role', ['owner', 'user'])->default('user');
 
             $table->timestamps();
         });
