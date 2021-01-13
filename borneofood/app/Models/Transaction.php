@@ -13,6 +13,24 @@ class Transaction extends Model
         'user_id',
         'invoice',
         'status',
-        'total'
+        'totalPrice',
+        'payment_id'
     ];
+    protected $hidden = [
+        'user_id',
+        'payment_id'
+    ];
+    public $with =[
+        'items',
+        'payment'
+    ];
+    public function items()
+    {
+        return $this->hasMany(FoodTransaction::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 }

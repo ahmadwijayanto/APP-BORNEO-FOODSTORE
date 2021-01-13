@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth:sanctum'])->only(['user', 'logout']);
+    }
     /**
      * Fungsi Api Login
      * validasi data user field(email dan password)

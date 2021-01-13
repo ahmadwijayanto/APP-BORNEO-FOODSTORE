@@ -34,6 +34,14 @@ dependencies:
   url_launcher: ^5.7.10
   shared_preferences: ^0.5.12+4
   intl: ^0.16.1
+  flutter_bloc: ^6.0.1
+  supercharged: ^1.10.0
+  flutter_spinkit: ^4.1.2+1
+  get: ^3.4.6
+  material_design_icons_flutter: ^4.0.5555
+  equatable: ^1.2.4
+  http: ^0.12.2
+  image_picker: ^0.6.7+11
 
 dev_dependencies:
   flutter_test:

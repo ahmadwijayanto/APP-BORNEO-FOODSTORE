@@ -1,0 +1,54 @@
+POST {{url}}/register
+Content-Type: application/json
+
+{
+  "name": "Ibrahim",
+  "email": "ibrahim1@mail.com",
+  "password": "{{password}}",
+  "password_confirmation": "{{password}}"
+}
+
+###
+POST {{url}}/login
+Content-Type: application/json
+
+{
+  "email": "ibrahim@mail.com",
+  "password": "password"
+}
+###
+POST {{url}}/categories
+Authorization: Bearer 1|i0X5wfrDtM926j8inbzrmNuaBu9I0kI9bNLTTlS4
+Content-Type: application/json
+
+{
+  "name": "Daging"
+}
+
+###
+POST {{url}}/foods
+Authorization: Bearer 1|i0X5wfrDtM926j8inbzrmNuaBu9I0kI9bNLTTlS4
+Content-Type: application/json
+
+{
+  "name": "Daging Sapi 1 KG",
+  "stock": 10,
+  "price": 100000,
+  "description": "Daging Sapi Dengan Kualitas Terbaik",
+  "category_id": 1
+}
+
+###
+GET {{url}}/carts
+Authorization: Bearer 3|KwHFsMFwIpQUZNvPPk8nX0KNWGmXmVKd7i845ASO
+Content-Type: application/json
+###
+POST {{url}}/carts
+Authorization: Bearer 1|6oeTRYfVqqLS9n6BawFUOiUVu58fmgtlppw2Qnn0
+Content-Type: application/json
+
+{
+  "food_id": 5,
+  "qty": 2,
+  "total": 200000
+}

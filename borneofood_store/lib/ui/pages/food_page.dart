@@ -1,19 +1,18 @@
 part of 'pages.dart';
 
-class ProductPage extends StatefulWidget {
-  static final routeName = "/product_page";
+class FoodPage extends StatefulWidget {
+  static final routeName = "/food_page";
+  final Food itemData;
 
-  // final dynamic itemData;
-  final Product itemData;
-
-  const ProductPage({Key key, this.itemData}) : super(key: key);
+  const FoodPage({Key key, this.itemData}) : super(key: key);
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _FoodPageState createState() => _FoodPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _FoodPageState extends State<FoodPage> {
   int _n = 0;
+  bool isLoading = false;
 
   void add() {
     setState(() {
@@ -70,9 +69,10 @@ class _ProductPageState extends State<ProductPage> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(widget.itemData.getImage),
+                        image: NetworkImage(
+                            imageURL + widget.itemData.images.first.image),
                         // image: AssetImage(widget.itemData["image"]),
-                        fit: BoxFit.fill)),
+                        fit: BoxFit.cover)),
               ),
 
               addVerticalSpace(getProportionateScreenHeight(10)),
@@ -130,7 +130,7 @@ class _ProductPageState extends State<ProductPage> {
                               bottom: 5,
                               right: 10,
                               child: Text(widget.itemData.getStock.toString(),
-                              // child: Text(widget.itemData["stock"].toString(),
+                                  // child: Text(widget.itemData["stock"].toString(),
                                   style: blackMediumText)),
                         ],
                       ),
@@ -141,7 +141,7 @@ class _ProductPageState extends State<ProductPage> {
                     Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          widget.itemData.getDescription,
+                          widget.itemData.description ?? "Deskripsi Kosong",
                           // widget.itemData["description"],
                           style: greyMediumText,
                         )),
@@ -159,13 +159,11 @@ class _ProductPageState extends State<ProductPage> {
                             child: new Icon(Icons.remove, color: Colors.white),
                             backgroundColor: Colors.deepOrangeAccent,
                           ),
-                          Text(
-                            '$_n',
-                            style: blackMediumText
-                          ),
+                          Text('$_n', style: blackMediumText),
                           FloatingActionButton(
                             heroTag: 'btn_plus',
-                            onPressed: _n >= widget.itemData.getStock ? null : add,
+                            onPressed:
+                                _n >= widget.itemData.getStock ? null : add,
                             // onPressed: _n >= widget.itemData["stock"] ? null : add,
                             child: new Icon(Icons.add, color: Colors.white),
                             backgroundColor: Colors.deepOrangeAccent,
@@ -177,10 +175,27 @@ class _ProductPageState extends State<ProductPage> {
                     addVerticalSpace(getProportionateScreenHeight(15)),
 
                     // Button Add
-                    HomeButton(
-                      text: 'Tambah ke keranjang',
-                      onTap: () {},
-                    ),
+                    isLoading
+                        ? loadingIndicator
+                        : HomeButton(
+                            text: 'Tambah ke keranjang',
+                            onTap: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await context.read<CartCubit>().submitCart(Cart(
+                                  qty: _n,
+                                  food: widget.itemData,
+                                  total: widget.itemData.price * _n));
+                              Get.dialog(AlertDialog(
+                                title: Text("Information"),
+                                content: Text("Success"),
+                              ));
+                              setState(() {
+                                isLoading = false;
+                              });
+                            },
+                          ),
                   ],
                 ),
               ),

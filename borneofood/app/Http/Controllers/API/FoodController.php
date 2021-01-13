@@ -5,11 +5,16 @@ namespace App\Http\Controllers\API;
 use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Food;
+use App\Models\FoodImage;
 use Exception;
 use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'getBaner']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +29,14 @@ class FoodController extends Controller
         );
     }
 
+    public function getBaner()
+    {
+        $baners = FoodImage::inRandomOrder()->limit(3)->get();
+        return ResponseHelper::success(
+            $baners,
+            "Succesfuly load baner"
+        );
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -40,7 +53,15 @@ class FoodController extends Controller
                     "stock" => "required|integer",
                 ]
             );
+            $data_food = $request->all();
+            $food = Food::create(
+                $data_food
+            );
 
+            return ResponseHelper::success(
+                $food,
+                "Food Susccesfuly created"
+            );
         } catch (Exception $error) {
             return ResponseHelper::error(
                 [
@@ -61,12 +82,12 @@ class FoodController extends Controller
     public function show($id)
     {
         $food = Food::find($id);
-        if($food == null){
+        if ($food == null) {
             return ResponseHelper::error(
                 [
                     "message" => "Food tidak ditemukan"
                 ],
-                "Food with id ".$id." Not found"
+                "Food with id " . $id . " Not found"
             );
         }
         return ResponseHelper::success(
@@ -85,12 +106,12 @@ class FoodController extends Controller
     public function update(Request $request, $id)
     {
         $food = Food::find($id);
-        if($food == null){
+        if ($food == null) {
             return ResponseHelper::error(
                 [
                     "message" => "Food tidak ditemukan"
                 ],
-                "Food with id ".$id." Not found"
+                "Food with id " . $id . " Not found"
             );
         }
         $food->update($request->all());
@@ -109,12 +130,12 @@ class FoodController extends Controller
     public function destroy($id)
     {
         $food = Food::find($id);
-        if($food == null){
+        if ($food == null) {
             return ResponseHelper::error(
                 [
                     "message" => "Food tidak ditemukan"
                 ],
-                "Food with id ".$id." Not found"
+                "Food with id " . $id . " Not found"
             );
         }
         $food->delete();

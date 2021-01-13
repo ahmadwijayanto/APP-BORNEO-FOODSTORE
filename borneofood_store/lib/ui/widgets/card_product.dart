@@ -2,7 +2,7 @@ part of 'widgets.dart';
 
 class ProductCard extends StatelessWidget {
   // final dynamic itemData;
-  final Product itemData;
+  final Food itemData;
   final double width;
   final double height;
 
@@ -14,9 +14,8 @@ class ProductCard extends StatelessWidget {
 
   bool isTerbaru() {
     // 23/06/2020
-    DateFormat format = DateFormat("dd/MM/yyyy");
     DateTime today = DateTime.now();
-    DateTime release = format.parse(this.itemData.getCreatedAt);
+    DateTime release = DateTime.parse(this.itemData.getCreatedAt);
     // DateTime release = format.parse(this.itemData["created_at"]);
 
     int difference = today.difference(release).inDays;
@@ -28,7 +27,7 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ProductPage(
+            builder: (context) => FoodPage(
                   itemData: itemData,
                 )));
       },
@@ -55,13 +54,13 @@ class ProductCard extends StatelessWidget {
         child: Column(children: <Widget>[
           Container(
             height: 120,
-            width: 150,
+            width: double.infinity,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                    image: AssetImage(this.itemData.getImage),
+                    image: NetworkImage(imageURL+this.itemData.images.first.image),
                     // image: AssetImage(this.itemData["image"]),
-                    fit: BoxFit.contain)),
+                    fit: BoxFit.cover)),
             child: Stack(children: <Widget>[
               Positioned(
                 bottom: 0,
@@ -84,8 +83,9 @@ class ProductCard extends StatelessWidget {
           addVerticalSpace(getProportionateScreenHeight(5)),
           Row(
             children: [
-              Text('Rp ', style: boldSmallText),
-              Text(this.itemData.getPrice.toString(), style: boldSmallText),
+              Text(NumberFormat.currency(
+                  symbol: 'Rp ', decimalDigits: 0, locale: 'id-ID')
+                  .format(itemData.price), style: boldSmallText),
               // Text(this.itemData["price"].toString(), style: boldSmallText),
             ],
           ),

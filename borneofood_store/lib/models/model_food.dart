@@ -1,12 +1,12 @@
 part of 'models.dart';
 
-class Product {
-    Product({
+class Food {
+    Food({
         this.id,
         this.name,
         this.description,
         this.category,
-        this.image,
+        this.images,
         this.price,
         this.createdAt,
         this.stock,
@@ -16,17 +16,19 @@ class Product {
     String name;
     String description;
     String category;
-    String image;
+    List<FoodImage> images;
     int price;
     String createdAt;
     int stock;
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+    factory Food.fromJson(Map<String, dynamic> json) => Food(
         id: json["id"],
         name: json["name"],
         description: json["description"],
         category: json["category"],
-        image: json["image"],
+        images: List<FoodImage>.from(
+            json["images"].map((x) => FoodImage.fromJson(x))
+        ),
         price: json["price"],
         createdAt: json["created_at"],
         stock: json["stock"],
@@ -37,7 +39,7 @@ class Product {
         "name": name,
         "description": description,
         "category": category,
-        "image": image,
+        "images": List<dynamic>.from(images.map((x) => x.toJson())),
         "price": price,
         "created_at": createdAt,
         "stock": stock,
@@ -48,7 +50,7 @@ class Product {
     String get getName => name;
     String get getDescription => description;
     String get getCategory => category;
-    String get getImage => image;
+    List<FoodImage> get getImages => images;
     int get getPrice => price;
     String get getCreatedAt => createdAt;
     int get getStock => stock;

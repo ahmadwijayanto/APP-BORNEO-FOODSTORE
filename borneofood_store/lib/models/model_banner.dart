@@ -1,25 +1,36 @@
 part of 'models.dart';
 
-class Banners {
-    Banners({
-        this.id,
-        this.imageUrl,
-    });
+class Banner {
+  Banner({
+    this.image,
+    this.createdAt,
+    this.updatedAt,
+  });
 
-    int id;
-    String imageUrl;
+  String image;
+  DateTime createdAt;
+  DateTime updatedAt;
 
-    factory Banners.fromJson(Map<String, dynamic> json) => Banners(
-        id: json["id"],
-        imageUrl: json["image_url"],
-    );
+  Banner copyWith({
+    String image,
+    DateTime createdAt,
+    DateTime updatedAt,
+  }) =>
+      Banner(
+        image: image ?? this.image,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "image_url": imageUrl,
-    };
+  factory Banner.fromJson(Map<String, dynamic> json) => Banner(
+    image: json["image"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+  );
 
-    // getter
-    int get getId => id;
-    String get getImageUrl => imageUrl;
+  Map<String, dynamic> toJson() => {
+    "image": image,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+  };
 }

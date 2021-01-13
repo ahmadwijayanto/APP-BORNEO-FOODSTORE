@@ -1,5 +1,7 @@
-
+import 'package:borneofood_store/ui/pages/address_page.dart';
+import 'package:borneofood_store/ui/pages/login_page.dart';
 import 'package:borneofood_store/ui/pages/pages.dart';
+import 'package:borneofood_store/ui/pages/register_page.dart';
 import 'package:flutter/widgets.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -10,9 +12,12 @@ final Map<String, WidgetBuilder> routes = {
   InfoPage.routeName: (context) => InfoPage(),
   KeranjangPage.routeName: (context) => KeranjangPage(),
   AkunPage.routeName: (context) => AkunPage(),
-  ProductPage.routeName: (context) => ProductPage(),
+  FoodPage.routeName: (context) => FoodPage(),
   SearchPage.routeName: (context) => SearchPage(),
   FAQPage.routeName: (context) => FAQPage(),
   SignInNumberPage.routeName: (context) => SignInNumberPage(),
   SignInOTPPage.routeName: (context) => SignInOTPPage(),
+  LoginPage.routeName: (context) => LoginPage(),
+  RegisterPage.routeName: (context) => RegisterPage(),
+  AddressPage.routeName: (context) => AddressPage(),
 };

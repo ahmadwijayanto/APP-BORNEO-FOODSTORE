@@ -70,4 +70,9 @@ class User extends Authenticatable
         return Carbon::parse($updated_at)
             ->getPreciseTimestamp(3);
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

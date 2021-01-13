@@ -7,9 +7,9 @@ class ShopBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FittedBox(
-      fit: BoxFit.fill,
-      child: Image.asset(
-        image != null ? image : null,
+      fit: BoxFit.cover,
+      child: Image.network(
+        imageURL+image
       ),
     );
   }

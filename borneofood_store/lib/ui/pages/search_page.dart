@@ -9,23 +9,12 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String payloadString = '';
-  Payload payload = new Payload();
-  List<Product> allProduct = new List<Product>();
+  List<Food> allProduct = new List<Food>();
   List<String> productName = new List<String>();
   List<String> recentProductName = new List<String>();
 
   void getPayload() async {
-    payloadString = await getStringValue(KEY_PAYLOAD);
-    final jsonData = json.decode(payloadString);
-    payload = Payload.fromJson(jsonData);
 
-    setState(() {
-      allProduct = payload.getProduct;
-      
-      for (var i = 0; i < allProduct.length; i++) {
-        productName.add(allProduct[i].getName);
-      }
-    });
   }
 
   // void getAllProductName() {
@@ -75,11 +64,11 @@ class DataSearch extends SearchDelegate<String> {
         this.recentProductName,
       });
 
-  final List<Product> allProduct;
+  final List<Food> allProduct;
   final List<String> productName;
   final List<String> recentProductName;
 
-  Product selectedProduct;
+  Food selectedProduct;
 
   // List<Product> allProduct = _SearchPageState().allProduct;
   // List<String> productName = _SearchPageState().productName;
@@ -166,7 +155,7 @@ class DataSearch extends SearchDelegate<String> {
             if (allProduct[i].getName == suggestionList[index]) {
               selectedProduct = allProduct[i];
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => ProductPage(
+                builder: (context) => FoodPage(
                   itemData: selectedProduct,
                 )));
             }
