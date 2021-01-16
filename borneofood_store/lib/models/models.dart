@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:borneofood_store/models/food_image.dart';
 
 part 'category_model.dart';

@@ -16,6 +16,17 @@ class TransactionCubit extends Cubit<TransactionState> {
       emit(TransactionFailed(result.message));
     }
   }
+
+  Future<void> getTransactions() async {
+    print("Halllo");
+    ApiReturnValue<List<Transaction>> result =
+        await TransactionServices.getTransactions();
+    if (result.value != null) {
+      emit(TransactionLoaded(result.value));
+    } else {
+      emit(TransactionFailed(result.message));
+    }
+  }
 }
 
 class TransactionState extends Equatable {
@@ -27,7 +38,7 @@ class TransactionState extends Equatable {
 class TransactionInitial extends TransactionState {}
 
 class TransactionLoaded extends TransactionState {
-  final List<Transition> transactions;
+  final List<Transaction> transactions;
 
   TransactionLoaded(this.transactions);
   @override

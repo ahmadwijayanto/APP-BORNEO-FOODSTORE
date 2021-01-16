@@ -40,9 +40,7 @@ class _SelectionPageState extends State<SelectionPage> {
           BelanjaPage(),
           InfoPage(),
           KeranjangPage(),
-          args.loggedIn ? 
-            AkunPage() :
-            SignInNumberPage(),  
+          args.loggedIn ? AkunPage() : SignInNumberPage(),
           // AkunPage(),
         ],
         onPageChanged: (index) {
@@ -79,9 +77,10 @@ class _SelectionPageState extends State<SelectionPage> {
           BottomNavigationBarItem(label: "Info", icon: Icon(Icons.shop)),
           BottomNavigationBarItem(
               label: "Keranjang", icon: Icon(Icons.shopping_cart)),
-              args.loggedIn ? 
-              BottomNavigationBarItem(label: "Akun", icon: Icon(Icons.person)) :
-              BottomNavigationBarItem(label: "Masuk", icon: Icon(Icons.person)),
+          args.loggedIn
+              ? BottomNavigationBarItem(label: "Akun", icon: Icon(Icons.person))
+              : BottomNavigationBarItem(
+                  label: "Masuk", icon: Icon(Icons.person)),
           // BottomNavigationBarItem(label: "Akun", icon: Icon(Icons.person)),
         ],
       ),

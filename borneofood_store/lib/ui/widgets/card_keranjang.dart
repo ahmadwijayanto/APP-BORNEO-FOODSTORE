@@ -115,6 +115,15 @@ class _KeranjangCardState extends State<KeranjangCard> {
                               isLoading = false;
                             });
                             Get.back();
+                            Get.snackbar(
+                                'Information', '1 Produk Berhasil di hapus',
+                                backgroundColor: Colors.lightGreen,
+                                isDismissible: true,
+                                colorText: Colors.white,
+                                snackPosition: SnackPosition.BOTTOM,
+                                margin: EdgeInsets.all(8),
+                                padding: EdgeInsets.all(8));
+
                             await context.read<CartCubit>().getCarts();
                           }
                         }),

@@ -82,16 +82,20 @@ class _FoodPageState extends State<FoodPage> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Rp ",
-                          style: productPriceText,
+                          "Harga Satuan",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          widget.itemData.getPrice.toString(),
-                          // widget.itemData["price"].toString(),
-                          style: productPriceText,
-                        ),
+                            NumberFormat.currency(
+                                    symbol: 'Rp ',
+                                    decimalDigits: 0,
+                                    locale: 'id-ID')
+                                .format(widget.itemData.price),
+                            style: boldSmallText),
                       ],
                     ),
 
@@ -187,10 +191,107 @@ class _FoodPageState extends State<FoodPage> {
                                   qty: _n,
                                   food: widget.itemData,
                                   total: widget.itemData.price * _n));
-                              Get.dialog(AlertDialog(
-                                title: Text("Information"),
-                                content: Text("Success"),
-                              ));
+
+                              var state = context.read<CartCubit>().state;
+                              if (state is CartCreated) {
+                                Get.bottomSheet(
+                                    Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.all(16),
+                                        child: Column(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                "Produk berhasil di tambahkan",
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                            ListTile(
+                                              leading: Image(
+                                                image: NetworkImage(imageURL +
+                                                    state.cart.food.images.first
+                                                        .image),
+                                                height: 60,
+                                                width: 60,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              title: Text(
+                                                state.cart.food.name,
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              subtitle: Text(
+                                                  "${state.cart.qty.toString()} Items ${NumberFormat.currency(symbol: "Rp.", decimalDigits: 0, locale: 'id-ID').format(state.cart.total)}",
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.grey)),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              margin: EdgeInsets.only(top: 24),
+                                              height: 45,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 28),
+                                              child: RaisedButton(
+                                                child: Text(
+                                                  "Lihat Keranjang",
+                                                  style: GoogleFonts.poppins(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16),
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                color: Colors.deepOrange,
+                                                onPressed: () {
+                                                  Get.offNamed(
+                                                      KeranjangPage.routeName);
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              margin: EdgeInsets.only(top: 24),
+                                              height: 45,
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 28),
+                                              child: RaisedButton(
+                                                child: Text(
+                                                  "Lanjut Belanja",
+                                                  style: GoogleFonts.poppins(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16),
+                                                ),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8)),
+                                                color: Colors.deepOrange,
+                                                onPressed: () {
+                                                  Get.toNamed(
+                                                      SelectionPage.routeName,
+                                                      arguments:
+                                                          ScreenArguments(
+                                                              0, true));
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                    backgroundColor: Colors.white);
+                              }
                               setState(() {
                                 isLoading = false;
                               });

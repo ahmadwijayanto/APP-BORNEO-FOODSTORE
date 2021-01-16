@@ -58,7 +58,8 @@ class ProductCard extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                    image: NetworkImage(imageURL+this.itemData.images.first.image),
+                    image: NetworkImage(
+                        imageURL + this.itemData.images.first.image),
                     // image: AssetImage(this.itemData["image"]),
                     fit: BoxFit.cover)),
             child: Stack(children: <Widget>[
@@ -79,13 +80,15 @@ class ProductCard extends StatelessWidget {
           Align(
               alignment: Alignment.centerLeft,
               child: Text(this.itemData.getName)),
-              // child: Text(this.itemData["name"])),
+          // child: Text(this.itemData["name"])),
           addVerticalSpace(getProportionateScreenHeight(5)),
           Row(
             children: [
-              Text(NumberFormat.currency(
-                  symbol: 'Rp ', decimalDigits: 0, locale: 'id-ID')
-                  .format(itemData.price), style: boldSmallText),
+              Text(
+                  NumberFormat.currency(
+                          symbol: 'Rp ', decimalDigits: 0, locale: 'id-ID')
+                      .format(itemData.price),
+                  style: boldSmallText),
               // Text(this.itemData["price"].toString(), style: boldSmallText),
             ],
           ),

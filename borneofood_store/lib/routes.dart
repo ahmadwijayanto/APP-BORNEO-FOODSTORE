@@ -1,5 +1,6 @@
 import 'package:borneofood_store/ui/pages/address_page.dart';
 import 'package:borneofood_store/ui/pages/login_page.dart';
+import 'package:borneofood_store/ui/pages/order_page.dart';
 import 'package:borneofood_store/ui/pages/pages.dart';
 import 'package:borneofood_store/ui/pages/register_page.dart';
 import 'package:flutter/widgets.dart';
@@ -20,4 +21,5 @@ final Map<String, WidgetBuilder> routes = {
   LoginPage.routeName: (context) => LoginPage(),
   RegisterPage.routeName: (context) => RegisterPage(),
   AddressPage.routeName: (context) => AddressPage(),
+  OrderPage.routeName: (context) => OrderPage(),
 };

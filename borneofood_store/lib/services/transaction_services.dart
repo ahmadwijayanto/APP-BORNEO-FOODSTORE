@@ -28,4 +28,22 @@ class TransactionServices {
 
     return ApiReturnValue(value: transaction);
   }
+
+  static Future<ApiReturnValue<List<Transaction>>> getTransactions(
+      {http.Client client}) async {
+    client ??= http.Client();
+    String url = baseURL + "transactions";
+    var response = await client.get(url, headers: {
+      "Authorization": "Bearer ${User.token}",
+    });
+    if (response.statusCode != 200) {
+      return ApiReturnValue(message: "failed Load Data");
+    }
+    print(response.body);
+    var data = jsonDecode(response.body);
+
+    List<Transaction> transactions =
+        (data["data"] as Iterable).map((e) => Transaction.fromJson(e)).toList();
+    return ApiReturnValue(value: transactions);
+  }
 }

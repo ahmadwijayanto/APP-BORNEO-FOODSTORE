@@ -8,18 +8,19 @@ Transaction transactionFromJson(String str) =>
 String transactionToJson(Transaction data) => json.encode(data.toJson());
 
 class Transaction {
-  Transaction({
-    this.id,
-    this.totalPrice,
-    this.createdAt,
-    this.updatedAt,
-    this.items,
-    this.payment,
-  });
+  Transaction(
+      {this.id,
+      this.totalPrice,
+      this.createdAt,
+      this.updatedAt,
+      this.items,
+      this.payment,
+      this.invoice});
 
   int id;
   int totalPrice;
   DateTime createdAt;
+  String invoice;
   DateTime updatedAt;
   List<Item> items;
   Payment payment;
@@ -30,25 +31,26 @@ class Transaction {
     DateTime createdAt,
     DateTime updatedAt,
     List<Item> items,
+    String incoice,
     Payment payment,
   }) =>
       Transaction(
-        id: id ?? this.id,
-        totalPrice: totalPrice ?? this.totalPrice,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-        items: items ?? this.items,
-        payment: payment ?? this.payment,
-      );
+          id: id ?? this.id,
+          totalPrice: totalPrice ?? this.totalPrice,
+          createdAt: createdAt ?? this.createdAt,
+          updatedAt: updatedAt ?? this.updatedAt,
+          items: items ?? this.items,
+          payment: payment ?? this.payment,
+          invoice: invoice ?? this.invoice);
 
   factory Transaction.fromJson(Map<String, dynamic> json) => Transaction(
-        id: json["id"],
-        totalPrice: json["totalPrice"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
-        payment: Payment.fromJson(json["payment"]),
-      );
+      id: json["id"],
+      totalPrice: json["totalPrice"],
+      createdAt: DateTime.parse(json["created_at"]),
+      updatedAt: DateTime.parse(json["updated_at"]),
+      items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
+      payment: Payment.fromJson(json["payment"]),
+      invoice: json["invoice"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,

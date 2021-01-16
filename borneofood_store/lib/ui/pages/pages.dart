@@ -6,9 +6,9 @@ import 'package:borneofood_store/cubit/cubit.dart';
 import 'package:borneofood_store/cubit/transaction_cubit.dart';
 import 'package:borneofood_store/cubit/user_cubit.dart';
 import 'package:borneofood_store/models/model_cart.dart';
-import 'package:borneofood_store/models/model_user.dart';
 import 'package:borneofood_store/models/models.dart';
 import 'package:borneofood_store/shared/shared.dart';
+import 'package:borneofood_store/ui/pages/order_page.dart';
 import 'package:borneofood_store/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +18,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:convert';
 
 part 'home_page.dart';
 part 'franchise_page.dart';

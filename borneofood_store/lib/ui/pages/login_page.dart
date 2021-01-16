@@ -1,6 +1,7 @@
 import 'package:borneofood_store/cubit/user_cubit.dart';
 import 'package:borneofood_store/ui/pages/pages.dart';
 import 'package:borneofood_store/ui/pages/register_page.dart';
+import 'package:borneofood_store/ui/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController password;
   TextEditingController email;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -103,46 +105,53 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Masukan password anda'),
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(top: 24),
-                  height: 45,
-                  padding: EdgeInsets.symmetric(horizontal: 28),
-                  child: RaisedButton(
-                    child: Text(
-                      "Login",
-                      style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16),
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
-                    color: Colors.deepOrange,
-                    onPressed: () async {
-                      print("Hallo");
-                      await context
-                          .read<UserCubit>()
-                          .login(email.text, password.text);
-                      UserState state = context.read<UserCubit>().state;
-                      if (state is UserLoaded) {
-                        Navigator.popAndPushNamed(context, HomePage.routeName);
-                      } else {
-                        Get.snackbar(
-                          "",
-                          "",
-                          backgroundColor: Colors.red[700],
-                          titleText: Text(
-                            "Login gagal",
+                isLoading
+                    ? loadingIndicator
+                    : Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(top: 24),
+                        height: 45,
+                        padding: EdgeInsets.symmetric(horizontal: 28),
+                        child: RaisedButton(
+                          child: Text(
+                            "Login",
                             style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontWeight: FontWeight.w500),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16),
                           ),
-                        );
-                      }
-                    },
-                  ),
-                ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          color: Colors.deepOrange,
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await context
+                                .read<UserCubit>()
+                                .login(email.text, password.text);
+                            UserState state = context.read<UserCubit>().state;
+                            if (state is UserLoaded) {
+                              Get.offNamed(HomePage.routeName);
+                            } else {
+                              Get.snackbar(
+                                "Information",
+                                "",
+                                backgroundColor: Colors.red[700],
+                                titleText: Text(
+                                  "Login gagal",
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              );
+                            }
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
+                        ),
+                      ),
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(top: 24),
@@ -160,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(8)),
                     color: Colors.orange,
                     onPressed: () {
-                      Navigator.pushNamed(context, RegisterPage.routeName);
+                      Get.toNamed(RegisterPage.routeName);
                     },
                   ),
                 )

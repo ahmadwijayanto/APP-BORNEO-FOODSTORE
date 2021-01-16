@@ -2,7 +2,6 @@ part of 'pages.dart';
 
 class AkunPage extends StatefulWidget {
   static final routeName = "/akun_page";
-
   @override
   _AkunPageState createState() => _AkunPageState();
 }
@@ -55,25 +54,80 @@ class _AkunPageState extends State<AkunPage> {
                                 ),
                               ),
                               Text(
-                                (context.bloc<UserCubit>().state as UserLoaded)
+                                (context.read<UserCubit>().state as UserLoaded)
                                     .user
                                     .name,
                                 style: GoogleFonts.poppins(
                                     fontSize: 18, fontWeight: FontWeight.w500),
                               ),
                               Text(
-                                (context.bloc<UserCubit>().state as UserLoaded)
+                                (context.read<UserCubit>().state as UserLoaded)
                                     .user
                                     .email,
                               )
                             ],
                           )),
                       //// Body
-                      Container(
-                        width: double.infinity,
+                      Card(
+                        elevation: 3.0,
                         color: Colors.white,
-                        child: Column(
-                          children: [],
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              CustomListTile(
+                                icon: Icons.people,
+                                text: "Change Profile",
+                                onTap: () {
+                                  print("Location");
+                                },
+                              ),
+                              Divider(
+                                height: 10.0,
+                                color: Colors.grey,
+                              ),
+                              CustomListTile(
+                                icon: Icons.visibility,
+                                text: "Change Password",
+                                onTap: () {
+                                  print("Location");
+                                },
+                              ),
+                              Divider(
+                                height: 10.0,
+                                color: Colors.grey,
+                              ),
+                              CustomListTile(
+                                icon: Icons.shopping_cart,
+                                text: "List Order",
+                                onTap: () {
+                                  Get.toNamed(OrderPage.routeName);
+                                },
+                              ),
+                              Divider(
+                                height: 10.0,
+                                color: Colors.grey,
+                              ),
+                              CustomListTile(
+                                icon: Icons.payment,
+                                text: "Payment",
+                                onTap: () {
+                                  print("Location");
+                                },
+                              ),
+                              Divider(
+                                height: 10.0,
+                                color: Colors.grey,
+                              ),
+                              CustomListTile(
+                                icon: Icons.logout,
+                                text: "Logout",
+                                onTap: () {
+                                  print("logout");
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -86,5 +140,39 @@ class _AkunPageState extends State<AkunPage> {
             : loadingIndicator,
       ),
     );
+  }
+}
+
+class CustomListTile extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  final Function onTap;
+
+  CustomListTile({this.icon, this.text, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: double.infinity,
+        height: 42,
+        child: RaisedButton(
+          color: Colors.white,
+          onPressed: onTap,
+          child: Row(
+            children: [
+              Icon(icon),
+              SizedBox(
+                width: 16.0,
+              ),
+              Text(
+                text,
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
