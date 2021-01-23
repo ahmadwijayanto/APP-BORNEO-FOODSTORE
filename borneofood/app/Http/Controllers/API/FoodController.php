@@ -20,11 +20,25 @@ class FoodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $foods = Food::all();
+        $limit = $request->input('limit', 8);
+        $name = $request->input('name');
+        $category = $request->input('category_id');
+        $foods = Food::query();
+        $like = 'like';
+        if(env('DB_CONNECTION') == 'pgsql'){
+            $like = 'ilike';
+        }
+        if($name){
+            $foods->where('name', $like, '%'.$name.'%')->orWhere('description', 'like', '%'.$name.'%');
+        }
+        if($category){
+            $foods->where('category_id', $category);
+        }
+
         return ResponseHelper::success(
-            $foods,
+            $foods->paginate($limit),
             "Data foods berhasil di load"
         );
     }

@@ -18,7 +18,6 @@ class TransactionCubit extends Cubit<TransactionState> {
   }
 
   Future<void> getTransactions() async {
-    print("Halllo");
     ApiReturnValue<List<Transaction>> result =
         await TransactionServices.getTransactions();
     if (result.value != null) {

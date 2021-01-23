@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\CartController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\FoodController;
+use App\Http\Controllers\API\PaymentController;
 use App\Http\Controllers\API\TransactionController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +23,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResources(
         [
             'carts' => CartController::class,
-            'transactions' => TransactionController::class
+            'transactions' => TransactionController::class,
+            'payments' => PaymentController::class,
         ]
     );
 });

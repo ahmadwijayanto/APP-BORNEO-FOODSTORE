@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   static final routeName = "/login_page";
@@ -21,6 +22,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String token = prefs.getString('api_token');
+    // if (token != null) {
+    //   Get.offNamed(HomePage.routeName);
+    // }
     password = TextEditingController();
     email = TextEditingController();
     super.initState();

@@ -11,8 +11,10 @@ class CartServices {
       {http.Client client}) async {
     client ??= http.Client();
     String url = baseURL + "carts";
-    var response = await client
-        .get(url, headers: {"Authorization": "Bearer ${User.token}"});
+    var response = await client.get(url, headers: {
+      "Authorization": "Bearer ${User.token}",
+      "Accept": "application/json"
+    });
     if (response.statusCode != 200) {
       return ApiReturnValue(message: "Please try again");
     }
@@ -29,7 +31,8 @@ class CartServices {
     var response = await client.post(url,
         headers: {
           "Authorization": "Bearer ${User.token}",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: jsonEncode(<String, String>{
           "food_id": cart.food.id.toString(),
@@ -67,7 +70,8 @@ class CartServices {
     var response = await client.put(url,
         headers: {
           "Authorization": "Bearer ${User.token}",
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: jsonEncode(<String, String>{
           "food_id": cart.food.id.toString(),

@@ -109,21 +109,13 @@ class _AkunPageState extends State<AkunPage> {
                                 color: Colors.grey,
                               ),
                               CustomListTile(
-                                icon: Icons.payment,
-                                text: "Payment",
-                                onTap: () {
-                                  print("Location");
-                                },
-                              ),
-                              Divider(
-                                height: 10.0,
-                                color: Colors.grey,
-                              ),
-                              CustomListTile(
                                 icon: Icons.logout,
                                 text: "Logout",
-                                onTap: () {
-                                  print("logout");
+                                onTap: () async {
+                                  final prefs =
+                                      await SharedPreferences.getInstance();
+                                  await prefs.clear();
+                                  Get.offAll(LoginPage());
                                 },
                               ),
                             ],

@@ -46,8 +46,8 @@ class User {
     String phoneNumber,
     String city,
     String role,
-    int createdAt,
-    int updatedAt,
+    String createdAt,
+    String updatedAt,
   }) =>
       User(
         id: id ?? this.id,
@@ -65,32 +65,32 @@ class User {
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    emailVerifiedAt: json["email_verified_at"],
-    picturePath: json["picturePath"],
-    address: json["address"],
-    houseNumber: json["houseNumber"],
-    phoneNumber: json["phoneNumber"],
-    city: json["city"],
-    role: json["role"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
-  );
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        picturePath: json["picturePath"],
+        address: json["address"],
+        houseNumber: json["houseNumber"],
+        phoneNumber: json["phoneNumber"],
+        city: json["city"],
+        role: json["role"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "email": email,
-    "email_verified_at": emailVerifiedAt,
-    "picturePath": picturePath,
-    "address": address,
-    "houseNumber": houseNumber,
-    "phoneNumber": phoneNumber,
-    "city": city,
-    "role": role,
-    "created_at": createdAt,
-    "updated_at": updatedAt,
-  };
+        "id": id,
+        "name": name,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "picturePath": picturePath,
+        "address": address,
+        "houseNumber": houseNumber,
+        "phoneNumber": phoneNumber,
+        "city": city,
+        "role": role,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }

@@ -5,10 +5,11 @@ import 'package:borneofood_store/cubit/transaction_cubit.dart';
 import 'package:borneofood_store/cubit/user_cubit.dart';
 import 'package:borneofood_store/routes.dart';
 import 'package:borneofood_store/ui/pages/login_page.dart';
+import 'package:borneofood_store/ui/pages/pages.dart';
+import 'package:borneofood_store/ui/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
-
 import 'cubit/food_cubit.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.orange,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        initialRoute: LoginPage.routeName,
+        initialRoute: SplashScreen.routeName,
         routes: routes,
         // home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),

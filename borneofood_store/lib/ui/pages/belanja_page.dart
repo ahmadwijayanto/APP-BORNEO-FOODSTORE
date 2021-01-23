@@ -17,8 +17,6 @@ class _BelanjaPageState extends State<BelanjaPage> {
     initialPage: 0,
   );
 
-  void updateListProduct(String category) {}
-
   @override
   void initState() {
     context.read<CategoryCubit>().getCategories();
@@ -163,7 +161,18 @@ class _BelanjaPageState extends State<BelanjaPage> {
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               children: state.categories
-                                  .map((e) => CategoryCard(e.name))
+                                  .map((e) => CategoryCard(
+                                        e.name,
+                                        isSelected: selectedCategory == e.name,
+                                        onTap: () {
+                                          setState(() {
+                                            selectedCategory = e.name;
+                                            context
+                                                .read<FoodCubit>()
+                                                .selectByCategory(e);
+                                          });
+                                        },
+                                      ))
                                   .toList(),
                             )
                           : loadingIndicator,

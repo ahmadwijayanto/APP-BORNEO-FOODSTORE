@@ -26,11 +26,11 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
         try {
-            $request->validate([
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
             $credetials_account = $request->only(['email', 'password']);
             if (!Auth::attempt($credetials_account)) {
                 return ResponseHelper::error(
@@ -123,8 +123,12 @@ class UserController extends Controller
      */
     public function user(Request $request)
     {
+        $user_token = Auth::guard('sanctum')->user();
         return ResponseHelper::success(
-            $request->user(),
+            [
+                'api_token' => $user_token,
+                'user' => $request->user()
+            ],
             "Data User berhasil di muat!"
         );
     }

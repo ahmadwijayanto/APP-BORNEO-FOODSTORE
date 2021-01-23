@@ -3,13 +3,13 @@ import 'package:borneofood_store/services/services.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class CategoryCubit extends Cubit<CategoryState> {
   CategoryCubit() : super(CategoryInitial());
 
   Future<void> getCategories() async {
     ApiReturnValue<List<Category>> result =
         await CategoryServices.getCategories();
+    result.value.add(Category(id: 1000, name: "Semua"));
     if (result.value != null) {
       emit(CategoryLoaded(result.value));
     } else {

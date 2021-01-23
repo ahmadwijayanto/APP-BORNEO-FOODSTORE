@@ -6,11 +6,35 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class FoodCubit extends Cubit<FoodState> {
   FoodCubit() : super(FoodInitial());
 
-  Future<void> getFoods()  async{
+  Future<void> getFoods() async {
     ApiReturnValue<List<Food>> result = await FoodServices.getFoods();
-    if(result.value != null){
+    if (result.value != null) {
       emit(FoodLoaded(result.value));
-    }else{
+    } else {
+      emit(FoodLoadFailed(result.message));
+    }
+  }
+
+  Future<void> selectByCategory(Category category) async {
+    if (category.name != "Semua") {
+      ApiReturnValue<List<Food>> result =
+          await FoodServices.getFoodsByCategory(category.id);
+      if (result.value != null) {
+        emit(FoodLoaded(result.value));
+      } else {
+        emit(FoodLoadFailed(result.message));
+      }
+    } else {
+      this.getFoods();
+    }
+  }
+
+  Future<void> getFoodsByName(String query) async {
+    ApiReturnValue<List<Food>> result =
+        await FoodServices.getFoodsByName(query);
+    if (result.value != null) {
+      emit(FoodSearched(result.value));
+    } else {
       emit(FoodLoadFailed(result.message));
     }
   }
@@ -37,4 +61,11 @@ class FoodLoadFailed extends FoodState {
   FoodLoadFailed(this.errMessage);
   @override
   List<Object> get props => [errMessage];
+}
+
+class FoodSearched extends FoodState {
+  final List<Food> foods;
+  FoodSearched(this.foods);
+  @override
+  List<Object> get props => [foods];
 }

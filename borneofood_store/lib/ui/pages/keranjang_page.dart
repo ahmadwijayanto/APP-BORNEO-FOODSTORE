@@ -9,11 +9,13 @@ class KeranjangPage extends StatefulWidget {
 
 class _KeranjangPageState extends State<KeranjangPage> {
   bool isLoading = false;
+  bool hasBayar = false;
 
   @override
   void initState() {
     super.initState();
     context.read<CartCubit>().getCarts();
+    // context.read<PaymentCubit>().getPayments();
   }
 
   @override
@@ -84,6 +86,14 @@ class KeranjangIsi extends StatefulWidget {
 
 class _KeranjangIsiState extends State<KeranjangIsi> {
   bool isLoading = false;
+  bool hasBayar = false;
+  Payment payment = Payment(
+      id: 1,
+      paymentName: "Transfer BRI",
+      noRek: "098973876784638",
+      rekeningName: "BORNEOFOOD",
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -154,8 +164,166 @@ class _KeranjangIsiState extends State<KeranjangIsi> {
                         ? loadingIndicator
                         : RaisedButton(
                             onPressed: () async {
+                              await Get.bottomSheet(
+                                ListView(
+                                  children: [
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.fromLTRB(28, 26, 28, 6),
+                                      child: Text(
+                                        "Nama Penerima",
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 28),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: Colors.deepOrange,
+                                              width: 2)),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 14),
+                                            hintText: 'Nama Lengkap'),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.fromLTRB(28, 16, 28, 6),
+                                      child: Text(
+                                        "Alamat Penerima",
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 28),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: Colors.deepOrange,
+                                              width: 2)),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 14),
+                                            hintText: 'Alamat Lengkap'),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.fromLTRB(28, 16, 28, 6),
+                                      child: Text(
+                                        "Nomer Hp Penerima",
+                                        style: GoogleFonts.poppins(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 16),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 28),
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: Colors.deepOrange,
+                                              width: 2)),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintStyle: GoogleFonts.poppins(
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 14),
+                                            hintText:
+                                                'Nomor Penerima Yang dapat di hubungi'),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin: EdgeInsets.only(top: 24),
+                                      height: 45,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 28),
+                                      child: DropdownSearch<Payment>(
+                                        selectedItem: payment,
+                                        label: "Metode Pembayaran",
+                                        dropdownBuilder: _paymentDropdown,
+                                        popupItemBuilder: _paymentPopup,
+                                        items: [
+                                          Payment(
+                                              id: 1,
+                                              paymentName: "Transfer BRI",
+                                              noRek: "098973876784638",
+                                              rekeningName: "BORNEOFOOD",
+                                              createdAt: DateTime.now(),
+                                              updatedAt: DateTime.now()),
+                                          Payment(
+                                              id: 1,
+                                              paymentName: "Transfer BNI",
+                                              noRek: "098973876784638",
+                                              rekeningName: "BORNEOFOOD",
+                                              createdAt: DateTime.now(),
+                                              updatedAt: DateTime.now())
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+                                      width: double.infinity,
+                                      margin: EdgeInsets.only(top: 24),
+                                      height: 45,
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 28),
+                                      child: RaisedButton(
+                                        child: Text(
+                                          "BAYAR",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16),
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8)),
+                                        color: Colors.deepOrange,
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                backgroundColor: Colors.white,
+                              );
+
                               setState(() {
                                 isLoading = true;
+                                hasBayar = false;
                               });
                               await context
                                   .read<TransactionCubit>()
@@ -167,12 +335,14 @@ class _KeranjangIsiState extends State<KeranjangIsi> {
                                   context.read<TransactionCubit>().state;
                               if (state is TransactionCreated) {
                                 Get.snackbar('', '',
-                                    titleText: Text("Information"),
+                                    titleText: Text("Informasi"),
                                     messageText:
-                                        Text("Succesfully Make Transaction"),
+                                        Text("Silahkan Lakukan Pembayaran"),
+                                    colorText: Colors.white,
                                     backgroundColor: Colors.green);
                                 await context.read<CartCubit>().getCarts();
                               }
+
                               setState(() {
                                 isLoading = false;
                               });
@@ -195,6 +365,25 @@ class _KeranjangIsiState extends State<KeranjangIsi> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _paymentDropdown(
+      BuildContext context, Payment selectedItem, String itemAsString) {
+    return Container(
+      child: Text(selectedItem.paymentName),
+    );
+  }
+
+  Widget _paymentPopup(BuildContext context, Payment item, bool isSelected) {
+    return Container(
+      child: Card(
+        elevation: 3.0,
+        child: ListTile(
+            title: Text(item.paymentName),
+            subtitle: Text("${item.noRek} AN ${item.rekeningName}",
+                style: GoogleFonts.poppins(fontSize: 12))),
+      ),
     );
   }
 }

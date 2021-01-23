@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +20,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware(['auth:sanctum', 'verified'])->prefix('dashboard')->group(function (){
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+    Route::resources([
+        'foods' => FoodController::class,
+        'payments' => PaymentController::class,
+        'users' => UserController::class,
+        'transactions' => TransactionController::class
+    ]);
 });

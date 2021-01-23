@@ -39,7 +39,6 @@ class TransactionServices {
     if (response.statusCode != 200) {
       return ApiReturnValue(message: "failed Load Data");
     }
-    print(response.body);
     var data = jsonDecode(response.body);
 
     List<Transaction> transactions =
